@@ -12,13 +12,23 @@ body {
 	background: $color__background-body; /* Fallback for when there is no custom background color defined. */
 }
 
-blockquote, q {
-	quotes: "" "";
+/* Typography base */
+body,
+button,
+input,
+select,
+textarea {
+	color: $color__text-main;
+	font-family: $font__main;
+	@include font-size(1);
+	line-height: $font__line-height-body;
+}
 
-	&:before,
-	&:after {
-		content: "";
-	}
+/* Make sure embeds and iframes fit their containers. */
+embed,
+iframe,
+object {
+	max-width: 100%;
 }
 
 hr {
@@ -72,29 +82,6 @@ img {
 
 figure {
 	margin: 1em 0; /* Extra wide images within figure tags don't overflow the content area. */
-}
-
-/*--------------------------------------------------------------
-## Links
---------------------------------------------------------------*/
-a {
-	color: $color__link;
-
-	&:visited {
-		color: $color__link-visited;
-	}
-	&:hover,
-	&:focus,
-	&:active {
-		color: $color__link-hover;
-	}
-	&:focus {
-		outline: thin dotted;
-	}
-	&:hover,
-	&:active {
-		outline: 0;
-	}
 }
 
 /*--------------------------------------------------------------
