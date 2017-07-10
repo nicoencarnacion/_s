@@ -11,8 +11,11 @@
  *
  * @package _s
  */
+ ?>
 
-get_header(); ?>
+<?php get_header(); ?>
+
+	<main id="content" class="site-content" role="main">
 
 	<?php
 	if ( have_posts() ) :
@@ -45,6 +48,6 @@ get_header(); ?>
 
 	endif; ?>
 
-<?php
-get_sidebar();
-get_footer();
+	</main>
+
+<?php get_footer(); ?>
