@@ -114,7 +114,7 @@ a {
 		clip: auto !important;
 		color: $color__text-screen;
 		display: block;
-		@include font-size(0.875);
+		@include font-size(0);
 		font-weight: bold;
 		height: auto;
 		left: 5px;

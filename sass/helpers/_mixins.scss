@@ -1,9 +1,3 @@
-// Rem output with px fallback
-@mixin font-size($sizeValue: 1) {
-	font-size: ($sizeValue * 16) * 1px;
-	font-size: $sizeValue * 1rem;
-}
-
 // Center block
 @mixin center-block {
 	display: block;
@@ -21,4 +15,122 @@
 // Clear after (not all clearfix need this also)
 @mixin clearfix-after() {
 	clear: both;
+}
+
+// Conditional Media Queries
+
+/*
+.box {
+  width: 100%;
+  @include bp(mobile-up) {
+    width: 100px;
+  }
+}
+*/
+
+// VARIABLES
+
+$mobile-cutoff: 480px;
+$tablet-cutoff: 768px;
+$sdesktop-cutoff: 992px;
+$desktop-cutoff: 1200px;
+$xlarge-cutoff: 1440px;
+
+// THE MIXIN
+@mixin bp($point) {
+
+  // MIN WIDTH
+  //                       480         768         992         1200        1440
+  //                  '     '     '     '     '     '     '     '     '     '     '     '
+  //                        '           '           '           '           '
+  //                        '           '           '           '           '
+  // tablet-up              ^----------------------------------------------------------->
+  // sdesktop-up                        ^----------------------------------------------->
+  // desktop-up                                     ^----------------------------------->
+  // xlarge-up                                                  ^----------------------->
+  // xxlarge-up                                                             ^----------->
+
+  @if $point == tablet-up {
+    @media only screen and (min-width: #{$mobile-cutoff}) { @content; }
+  }
+  @else if $point == sdesktop-up {
+    @media only screen and (min-width: #{$tablet-cutoff}) { @content; }
+  }
+  @else if $point == desktop-up {
+    @media only screen and (min-width: #{$sdesktop-cutoff}) { @content; }
+  }
+  @else if $point == xlarge-up {
+    @media only screen and (min-width: #{$desktop-cutoff}) { @content; }
+  }
+  @else if $point == xxlarge-up {
+    @media only screen and (min-width: #{$xlarge--cutoff}) { @content; }
+  }
+
+  // MAX WIDTH
+  //                       480         768         992         1200        1440
+  //                  '     '     '     '     '     '     '     '     '     '
+  //                        '           '           '           '           '
+  //                        '           '           '           '           '
+  // tablet-down       <----------------^           '           '           '
+  // sdesktop-down     <----------------------------^           '           '
+  // desktop-down      <----------------------------------------^           '
+  // xlarge-down       <----------------------------------------------------^
+
+  @else if $point == tablet-down {
+    @media only screen and (max-width: #{$tablet-cutoff - 1px}) { @content; }
+  }
+  @else if $point == sdesktop-down {
+    @media only screen and (max-width: #{$sdesktop-cutoff - 1px}) { @content; }
+  }
+  @else if $point == desktop-down {
+    @media only screen and (max-width: #{$desktop-cutoff - 1px}) { @content; }
+  }
+  @else if $point == xlarge-down {
+    @media only screen and (max-width: #{$xlarge-cutoff - 1px}) { @content; }
+  }
+
+  // DEVICE
+  //                       480         768         992         1200        1440
+  //                  '     '     '     '     '     '     '     '     '     '
+  //                  '     '           '           '           '           '
+  //                  '     '           '           '           '           '
+  // mobile-only       <--->            '           '           '           '
+  // tablet-only            <---------->            '           '           '
+  // sdesktop-only                      <---------->            '           '
+  // desktop-only                                   <----------->           '
+  // xlarge-only                                                 <---------->
+
+  @else if $point == mobile-only {
+    @media only screen and (max-width: #{$mobile-cutoff - 1px}) { @content; }
+  }
+  @else if $point == tablet-only {
+    @media only screen and (min-width: #{$mobile-cutoff}) and (max-width: #{$tablet-cutoff - 1px}) { @content; }
+  }
+  @else if $point == sdesktop-only {
+    @media only screen and (min-width: #{$tablet-cutoff}) and (max-width: #{$sdesktop-cutoff - 1px}) { @content; }
+  }
+  @else if $point == desktop-only {
+    @media only screen and (min-width: #{$sdesktop-cutoff}) and (max-width: #{$desktop-cutoff - 1px}) { @content; }
+  }
+  @else if $point == xlarge-only {
+    @media only screen and (min-width: #{$desktop-cutoff}) and (max-width: #{$xlarge-cutoff - 1px}) { @content; }
+  }
+}
+
+// Conditional Media Queries
+
+@function pow($number, $exponent) {
+  $value: 1;
+
+  @if $exponent > 0 {
+    @for $i from 1 through $exponent {
+      $value: $value * $number;
+    }
+  }
+
+  @return $value;
+}
+
+@mixin font-size($ms) {
+  font-size: $font__base * pow($font__size-ratio, $ms);
 }
